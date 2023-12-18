@@ -39,7 +39,6 @@ module "dynamo" {
 module "instancia" {
     source = "./modulos/instancia"
     ami_id = var.ubuntu_ami
-
     tipo_instancia = "t2.micro"
     puerto_servidor =   var.puerto_servidor
 }
