@@ -1,4 +1,3 @@
-
 # -------------------------
 # Define el provider de AWS
 # -------------------------
@@ -8,9 +7,12 @@ provider "aws" {
 
 locals {
   region          = "eu-west-3"
-  nombre_bucket = "bucket_terraform_renzo"
-  nombre_dynamodb = "dynamodb_terraform_renzo"
-  columna_dynamo = { name="ID", type="N" }
+  nombre-bucket =   "bucket-terraform-renzo"
+  nombre_dynamoDB = "dynamodb-terraform-renzo"
+  nombre-ec2 =      "instancia-terraform"
+  columna_dynamo =  { name="ID", type="N" }
+  ami    =          var.ubuntu_ami
+
 }
 
 # -------------------------
@@ -18,7 +20,7 @@ locals {
 # -------------------------
 module "bucket-s3" {
     source = "./modulos/bucket-s3"
-    nombre_bucket = local.nombre_bucket
+    nombre-bucket = local.nombre-bucket
 
 }
 
@@ -27,6 +29,17 @@ module "bucket-s3" {
 # -------------------------
 module "dynamo" {
     source = "./modulos/dynamo"
-    nombre_dynamodb = local.nombre_dynamodb
+    nombre_dynamoDB = local.nombre_dynamoDB
     hash_key = local.columna_dynamo
+}
+
+# -------------------------
+# Define la EC2
+# -------------------------
+module "instancia" {
+    source = "./modulos/instancia"
+    ami_id = var.ubuntu_ami
+
+    tipo_instancia = "t2.micro"
+    puerto_servidor =   var.puerto_servidor
 }

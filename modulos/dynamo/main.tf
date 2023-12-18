@@ -1,8 +1,8 @@
 # ---------------------------------------
 # Define una DybamoDB
 # 
-resource "aws_dynamodb_table" "dynamoDB_ejercicio_terraform" {
-  name           = "var.nombre_dynamoDB"
+resource "aws_dynamodb_table" "dynamoDB-ejercicio-terraform" {
+  name           = var.nombre_dynamoDB
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = var.hash_key.name
 
