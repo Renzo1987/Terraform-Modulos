@@ -17,3 +17,8 @@ variable "runtime_lambda"{
   description = "Lenguaje de la funcion"
   type = string
 }
+
+variable "codigo" {
+  description = "Código de la lambda en formato zip"
+  type = string
+}
