@@ -66,3 +66,26 @@ module "lambda" {
   codigo  = local.codigo_lambda
   lambda_handler = local.handler_nombre
 }
+
+# -------------------------
+# Permitir al bucket invocar a la lambda
+# -------------------------
+
+resource "aws_lambda_permission" "permitir_bucket" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda.arn_lambda
+  principal     = "s3.amazonaws.com"
+  source_arn    = module.bucket-s3.info_bucket.arn
+}
+# -------------------------
+# Define el trigger de la lambda
+# -------------------------
+resource "aws_s3_bucket_notification" "lambda_trigger" {
+  bucket                = module.bucket-s3.info_bucket.id
+
+  lambda_function {
+    lambda_function_arn = module.lambda.arn_lambda
+    events              = ["s3:ObjectCreated:*"]
+  }
+}
