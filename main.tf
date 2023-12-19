@@ -12,7 +12,8 @@ locals {
   nombre-ec2 =      "instancia-terraform"
   nombre_lambda=    "lambda_terraform"
   columna_dynamo =  { name="ID", type="N" }
-  ami    =          var.ubuntu_ami
+  ami    =          "ami-05b5a865c3579bbc4"
+  puerto_servidor = "8080"
   runtime_lambda = "python3.11"
   codigo_lambda  = "code.zip"
   permisos_lambda     = ["AmazonDynamoDBFullAccess", "AmazonS3ReadOnlyAccess"]
@@ -44,9 +45,9 @@ module "dynamo" {
 # -------------------------
 module "instancia" {
     source = "./modulos/instancia"
-    ami_id = var.ubuntu_ami
+    ami_id = local.ami
     tipo_instancia = "t2.micro"
-    puerto_servidor =   var.puerto_servidor
+    puerto_servidor =   local.puerto_servidor
 }
 
 data "aws_iam_policy" "permisos" {
